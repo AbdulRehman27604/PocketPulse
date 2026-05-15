@@ -9,7 +9,7 @@ def home():
 
 @app.route("/ask", methods=["POST"])
 def ask():
-    data = request.get_json()
+    data = request.get_json(silent=True)
 
     if not data:
         return jsonify({"error": "No JSON received"}), 400
@@ -21,15 +21,6 @@ def ask():
 
     try:
         reply = generate_ai_response(message)
-
-        return jsonify({
-            "reply": reply
-        })
-
+        return jsonify({"reply": reply})
     except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5050)
+        return jsonify({"error": str(e)}), 500
