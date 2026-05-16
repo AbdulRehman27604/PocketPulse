@@ -10,8 +10,8 @@
 U8G2_SH1106_128X64_NONAME_F_HW_I2C oled(U8G2_R0, U8X8_PIN_NONE);
 
 // WiFi details
-const char* ssid = "TELUSWiFi6977";
-const char* password = "hQef4qxhfP";
+const char* ssid = "Stromfiber Lounge";
+const char* password = "53833464";
 
 // Render Flask endpoint
 String serverUrl = "https://aiwatch-i0mk.onrender.com/ask";
