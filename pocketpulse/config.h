@@ -18,6 +18,8 @@ static const char* AI_SERVER_URL = "https://aiwatch-i0mk.onrender.com/ask";
 // =====================================================
 static const int POT_PIN = 34;       // Potentiometer middle pin
 static const int BUZZER_PIN = 25;    // Active buzzer + pin
+static const int PAGE_BUTTON_PIN = 27; // Button for changing pages
+static const int PAUSE_PIN = 26;
 
 // OLED I2C pins
 static const int OLED_SDA = 21;

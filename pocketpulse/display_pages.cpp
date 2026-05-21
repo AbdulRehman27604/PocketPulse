@@ -98,7 +98,7 @@ void updateDisplayPage(int currentPage) {
 }
 
 void showAIPage() {
-  String text = "AI Page\n";
+  String text = "Ask AI...\n";
   if (lastAIQuestion.length() > 0) {
     text += "Q: " + lastAIQuestion + "\n";
   }

@@ -1,4 +1,6 @@
 #include "config.h"
+#include "setup_portal.h"
+#include "alarm.h"
 #include "display_pages.h"
 #include "wifi_time.h"
 #include "weather.h"
@@ -21,34 +23,70 @@ const unsigned long weatherInterval = 10UL * 60UL * 1000UL;
 const unsigned long prayerInterval = 6UL * 60UL * 60UL * 1000UL;
 const unsigned long azanCheckInterval = 10000;
 
-int readPageFromPot() {
-  int value = analogRead(POT_PIN);
-  int page = map(value, 0, 4095, 0, totalPages - 1);
+// int readPageFromPot() {
+//   int value = analogRead(POT_PIN);
+//   int page = map(value, 0, 4095, 0, totalPages - 1);
 
-  if (page < 0) page = 0;
-  if (page >= totalPages) page = totalPages - 1;
+//   if (page < 0) page = 0;
+//   if (page >= totalPages) page = totalPages - 1;
 
-  return page;
+//   return page;
+// }
+
+void handlePageButton() {
+  static int lastButtonState = HIGH;
+  static unsigned long lastPressTime = 0;
+
+  int buttonState = digitalRead(PAGE_BUTTON_PIN);
+
+  if (lastButtonState == HIGH && buttonState == LOW) {
+    if (millis() - lastPressTime > 250) {
+      currentPage++;
+
+      if (currentPage >= totalPages) {
+        currentPage = 0;
+      }
+
+      lastPressTime = millis();
+
+      Serial.print("Page changed to: ");
+      Serial.println(currentPage);
+    }
+  }
+
+  lastButtonState = buttonState;
 }
 
 void setup() {
   Serial.begin(115200);
   delay(1000);
 
-  pinMode(POT_PIN, INPUT);
+  // pinMode(POT_PIN, INPUT);
+  pinMode(PAGE_BUTTON_PIN, INPUT_PULLUP);
   setupBuzzer();
 
   setupDisplay();
-  showMessage("AI Watch", "Starting...");
+  showMessage("PocketPulse", "Starting...");
 
-  connectToWiFi();
+  loadSavedSettings();
+
+  bool connected = connectToSavedWiFi();
+
+  if (!connected) {
+    startSetupPortal();
+  }
+
   setupTime();
   waitForTimeSync();
+
+  loadAlarmSettings();
+  startSettingsServer();
 
   getWeather();
   getPrayerTimes();
 
-  showMessage("Ready", "Turn knob pages");
+  // showMessage("Ready", "Turn knob pages");
+  showMessage("Ready", "Press button pages");
   delay(1000);
 
   Serial.println();
@@ -57,8 +95,11 @@ void setup() {
 
 void loop() {
   handleSerialAI();
-
-  currentPage = readPageFromPot();
+  handleSettingsServer();
+  checkAlarm();
+  
+  // currentPage = readPageFromPot();
+  handlePageButton();
 
   unsigned long now = millis();
 

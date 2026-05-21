@@ -4,6 +4,8 @@
 #include <Arduino.h>
 
 void setupBuzzer();
+
 void buzzForOneMinute(String prayerName);
+void buzzForAlarm(String alarmName);
 
 #endif
