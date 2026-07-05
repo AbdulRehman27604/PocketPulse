@@ -29,6 +29,13 @@ PocketPulse is an ESP32-based smart desktop assistant that combines an OLED inte
 | 3.7V LiPo Battery | Portable power |
 | TP4056 Charger Module | Battery charging |
 
+## Prototype
+
+| Front View | Back Wiring |
+|---|---|
+| <img src="assets/pocketpulse-front.jpg" width="300"> | <img src="assets/pocketpulse-back-wiring.jpg" width="300"> |
+| ESP32-based PocketPulse prototype | Perfboard wiring and soldering layout |
+
 ## Pin Configuration
 
 | Function | ESP32 Pin |
